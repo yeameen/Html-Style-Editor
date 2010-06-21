@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Testing editor</title>
+
+    <!-- Skin CSS file -->
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/assets/skins/sam/skin.css">
+    <!-- Utility Dependencies -->
+    <script src="js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script src="js/yui/build/element/element-min.js"></script>
+    <!-- Needed for Menus, Buttons and Overlays used in the Toolbar -->
+    <script src="js/yui/build/container/container_core-min.js"></script>
+    <script src="js/yui/build/menu/menu-min.js"></script>
+    <script src="js/yui/build/button/button-min.js"></script>
+    <!-- Source file for Rich Text Editor-->
+    <script src="js/yui/build/editor/editor-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+
+    <!-- editor -->
+    <link rel="stylesheet" type="text/css" href="js/styleEditor/style.css" />
+    <script type="text/javascript" src="js/styleEditor/script.js"></script>
+    
+    <script type="text/javascript">
+        
+        $(document).ready(function() {
+
+            jQuery('.showEditor').bind('click', function() {
+                //                jQuery(dialogHtml).dialog({
+                //                    height: 300,
+                //                    width: 550
+                //                });
+                $('#editor').dialog({
+                    title: "Customize style - " + $(this).text(),
+                    height: 500,
+                    width: 800,
+                    modal: true,
+                    resizable: false,
+                    dialogClass: 'customStyleDialogPlain',
+                    buttons: {
+                        'Cancel': function() {
+                            $(this).dialog('close');
+                        },
+                        'Update': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+                EditorUtil.initEditor(this);
+            });
+
+            $('.customStyleButton').bind('mouseover', function() {
+                $(this).addClass('customStyleButtonMouseOver');
+            });
+
+            $('.customStyleButton').bind('mouseout', function() {
+                $(this).removeClass('customStyleButtonMouseOver');
+            });
+
+
+            var demoText = $('#customStyleDemo');
+            $('.customStyleButton').live('click', function() {
+                var button = $(this);
+                var title = button.attr('title');
+                switch(title) {
+                    case 'Bold':
+                        if(demoText.css('font-weight') == 'bold') {
+                            demoText.css('font-weight', 'normal');
+                        } else {
+                            demoText.css('font-weight', 'bold');
+                        }
+                        break;
+                    case 'Italic':
+                        if(demoText.css('font-style') == 'italic') {
+                            demoText.css('font-style', '');
+                        } else {
+                            demoText.css('font-style', 'italic');
+                        }
+                        break;
+                    case 'Underline':
+                        if(demoText.css('text-decoration') == 'underline') {
+                            demoText.css('text-decoration', '');
+                        } else {
+                            demoText.css('text-decoration', 'underline');
+                        }
+                        break;
+                    case 'left':
+                    case 'center':
+                    case 'right':
+                    case 'justify':
+                        $('.customStyleAlignButton').each(function(index) {
+                            var el = $(this);
+                            if(el.hasClass('customStyleButtonSelected') && el.attr('title') === title) {
+                                demoText.css('text-align', '');
+                            } else if(el.hasClass('customStyleButtonSelected')) {
+                                el.removeClass('customStyleButtonSelected');
+                            } else if (el.attr('title') === title) {
+                                demoText.css('text-align', title);
+                            }
+                        });
+                        break;
+                }
+                button.toggleClass('customStyleButtonSelected');
+            });
+
+            // font
+            $('#customStyleFont').bind('change', function() {
+                var selectedFont = $('#customStyleFont :selected').text();
+                demoText.css('font-family', selectedFont);
+            });
+
+            // line spacing
+            $('#customStyleLineHeight').bind('change', function() {
+                var heightValue = $('#customStyleLineHeight :selected').val();
+                demoText.css('line-height', heightValue);
+            });
+
+            var marginTopSelect = $('.selectMargin');
+            for(var i = 0; i <= 20; i++) {
+                 marginTopSelect.append(new Option(i/10 + " in", i/10 + "in"));
+            }
+
+            marginTopSelect.bind('change', function() {
+                var key = $(this).attr('name').replace("margin", "padding");
+                var value = $(this).find(':selected').val();
+                var curValue = demoText.css(key);
+
+                if(key.indexOf('left') > 0) {
+                    var width = (7.0 - (parseFloat(value) + parseFloat(demoText.css('padding-right')))) + 'in';
+                    alert(width);
+                    demoText.css('width', width);
+                } else if (key.indexOf('right') > 0) {
+                    var width = (7.0 - (parseFloat(value) + parseFloat(demoText.css('padding-left')))) + 'in';
+                    alert(width);
+                    demoText.css('width', width);
+                }
+                demoText.css(key, value);
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+<div class="yui-skin-sam">
+    <textarea id="msg" rows="0" cols="0" disabled="disabled">
+        A test editor window
+    </textarea>
+</div>
+<script type="text/javascript">
+
+//    var myEditor = new YAHOO.widget.SimpleEditor('msg', editorOptions );
+
+//    myEditor.render();
+
+</script>
+
+<p>
+    <ul>
+      <li>
+          <a href="#" class="showEditor" style="font-size: 14pt; text-align: center; font-family: Arial; text-align: left;">Show the editor</a>
+      </li>
+
+      <li>
+          <a href="#" class="showEditor" style="font-size: 14pt; text-align: center; font-family: times New Roman; font-weight: bold;">Custom Title</a>
+      </li>
+      <li><a href="#" class="showEditor" style="font-size: 12pt; text-align: center; font-family: times New Roman; font-weight: bold;">Custom Heading 1</a>
+      </li>
+      <li>
+          <a href="#" class="showEditor" style="font-size: 12pt; text-align: left; font-family: times New Roman; font-style: italic; font-weight: bold;">Custom Heading 2</a>
+      </li>
+      <li>
+          <a href="#" class="showEditor" style="font-size: 11pt; text-align: right; font-family: Arial; font-style: italic; margin-left: 0.5in">Custom Heading 3</a>
+      </li>
+    </ul>
+</p>
+<div style="display: none" id="editor">
+    <form id="editorForm">
+        <label for="styleName">Name of the style</label>
+        <input name="styleName" id="styleName">
+        <div id="customStyleToolbar">
+            <div id="customStyleToolbarFont" class="customToolbarContainer">
+                <label for="customStyleFont">Font</label>
+                <select name="font" id="customStyleFont">
+                    <option label="Arial" value="Arial">Arial</option>
+                    <option label="Courier New" value="Courier New">Courier New</option>
+                    <option label="Times New Roman" value="Times New Roman" selected="selected">Times New Roman</option>
+                </select>
+                <label for="customStyleSize">Size</label>
+                <select name="size" id="customStyleSize">
+                    <option label="8" value="8">8</option>
+                    <option label="9" value="9">9</option>
+                    <option label="10" value="10">10</option>
+                    <option label="11" value="11">11</option>
+                    <option label="12" value="12">12</option>
+                    <option label="13" value="13">13</option>
+                    <option label="14" value="14">14</option>
+                    <option label="15" value="15">15</option>
+                    <option label="16" value="16">16</option>
+                </select>
+                <ul style="float: left;">
+                    <li><span title="Bold" class="customStyleButton">
+                          <span class="customStyleIcon" style="background-position:0px 0px"></span>
+                      </span></li>
+                    <li><span title="Italic" class="customStyleButton">
+                          <span class="customStyleIcon" style="background-position:0px -36px"></span>
+                      </span></li>
+                    <li><span title="Underline" class="customStyleButton">
+                          <span class="customStyleIcon" style="background-position: 0px -72px;"></span>
+                      </span></li>
+                    <li class="separator">
+                        <span>|</span>
+                    </li>
+                    <li><span title="left" class="customStyleButton customStyleAlignButton">
+                          <span class="customStyleIcon" style="background-position:0px -324px"></span>
+                      </span></li>
+                    <li><span title="center" class="customStyleButton customStyleAlignButton">
+                          <span class="customStyleIcon" style="background-position:0px -360px"></span>
+                      </span></li>
+                    <li><span title="right" class="customStyleButton customStyleAlignButton">
+                          <span class="customStyleIcon" style="background-position:0px -396px"></span>
+                      </span></li>
+                    <li><span title="justify" class="customStyleButton customStyleAlignButton">
+                          <span class="customStyleIcon" style="background-position:0px -432px"></span>
+                      </span></li>
+                </ul>
+            </div>
+            <div id="customStyleToolbarFormat" class="customToolbarContainer" style="width: 250px;">
+                <label for="customStyleLineHeight">Line spacing</label>
+                <select name="lineHeight" id="customStyleLineHeight">
+                    <option label="Single" value="1">Single</option>
+                    <option label="1.5 Lines" value="1.5">1.5 Lines</option>
+                    <option label="Double" value="2">Double</option>
+                </select>
+                <label for="customStyleMarginTop">Margin-Top</label>
+                <select name="margin-top" id="customStyleMarginTop" class="selectMargin"></select>
+                <label for="customStyleMarginRight">Margin-Right</label>
+                <select name="margin-right" id="customStyleMarginRight" class="selectMargin"></select>
+                <label for="customStyleMarginBottom">Margin-Bottom</label>
+                <select name="margin-bottom" id="customStyleMarginBottom" class="selectMargin"></select>
+                <label for="customStyleMarginLeft">Margin-Left</label>
+                <select name="margin-left" id="customStyleMarginLeft" class="selectMargin"></select>
+            </div>
+        </div>
+    </form>
+    <br />
+
+    <div id="customStyleDemo" style="float:left">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
+</div>
+</body>
+</html>

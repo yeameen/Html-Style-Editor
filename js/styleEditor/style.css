@@ -1,0 +1,78 @@
+#customStyleToolbar ul {
+    list-style-type: none;
+    cursor: pointer;
+}
+
+#customStyleToolbar ul > li {
+    float: left;
+    display: block;
+
+}
+#customStyleToolbar .customStyleButton {
+    width: 30px;
+    height: 25px;
+    float: left;
+    background: url("http://yui.yahooapis.com/2.8.1/build/assets/skins/sam/sprite.png") repeat-x scroll 0px 0px transparent;
+    border: 1px solid black;
+}
+
+#customStyleToolbar .customStyleButtonMouseOver,
+#customStyleToolbar .customStyleButtonSelected {
+    background-position:  0px -1700px;
+}
+#customStyleToolbar .separator {
+    width: 10px;
+}
+
+#customStyleToolbar .customStyleButton .customStyleIcon{
+    background: url("http://yui.yahooapis.com/2.8.1/build/assets/skins/sam/editor-sprite.gif") no-repeat scroll 30px 30px transparent;
+    float: left;
+    height: 18px;
+    width: 18px;
+    position: relative;
+    top: 5px;
+    left: 5px;
+    background-position: 0 -72px;
+}
+
+#customStyleToolbar ul li {
+    text-align: left;
+    height: 30px;
+    display: block;
+}
+
+#customStyleDemo {
+    margin-top: 30px;
+    background-color: #fff;
+    height: 3in;
+    width: 7in;
+    float: left;
+}
+
+.customStyleDialogPlain {
+    font-family: serif;
+    font-size: 12pt;
+}
+
+.customStyleDialogPlain ul {
+    font-size: 10pt;
+}
+
+.customToolbarContainer {
+    float: left;
+    width: 300px;
+    font-size: 10pt;
+    border: 1px solid black;
+    height: 120px;
+}
+
+#customStyleToolbar label{
+    width: 100px;
+    float: left;
+}
+
+#customStyleToolbar select {
+    float: left;
+    width: 150px;
+    margin: 1px 0px;
+}
